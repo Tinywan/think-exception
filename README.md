@@ -13,7 +13,14 @@
 composer require tinywan/think-exception-handler
 ```
 
-## 配置
+## 发布配置
+
+```phpregexp
+php think tinywan:exception
+```
+这将自动生成 `config/exception.php` 配置文件。
+
+## 配置异常类
 
 `app/provider.php`
 
