@@ -12,6 +12,7 @@ use think\exception\Handle as ThinkHandel;
 use think\exception\InvalidArgumentException;
 use think\exception\RouteNotFoundException;
 use think\exception\ValidateException;
+use think\facade\Env;
 use think\facade\Log;
 use think\Request;
 use think\Response;
@@ -93,6 +94,7 @@ class Handler extends ThinkHandel
     {
         $this->addRequestInfoToResponse($request);
         $this->handlerAllException($e);
+        $this->isDebugResponse($e);
         return $this->buildResponse();
     }
 
@@ -109,8 +111,7 @@ class Handler extends ThinkHandel
             'url' => $request->url(),
             'method' => $request->method(),
             'param' => $request->param(),
-            'host' => $request->host(),
-            'client' => $request->ip(),
+            'ip' => $request->ip(),
             'timestamp' => date('Y-m-d H:i:s'),
         ]);
     }
@@ -146,21 +147,35 @@ class Handler extends ThinkHandel
             $this->statusCode = 404;
             $this->errorMessage = '接口路由不存在';
         } elseif ($e instanceof ValidateException) {
-            $this->statusCode = 415;
+            $this->statusCode = 400;
             $this->errorMessage = $e->getMessage();
-        } elseif ($e instanceof InvalidArgumentException) { // 当参数不是预期的类型时
+        } elseif ($e instanceof InvalidArgumentException) {
             $this->statusCode = 415;
             $this->errorMessage = '预期参数配置异常：' . $e->getMessage();
         } else {
             $this->statusCode = 500;
             $this->errorMessage = '请求失败，请稍后再试';
-            $this->errorCode = 500;
             Log::error(array_merge($this->responseData, [
                 'error_message' => $e->getMessage(),
                 'error_trace' => $e->getTraceAsString(),
                 'error_file'    => $e->getFile(),
                 'error_file_line'    => $e->getLine(),
             ]));
+        }
+    }
+
+    /**
+     * @desc 调试模式：错误处理器会显示异常以及详细的函数调用栈和源代码行数来帮助调试，将返回详细的异常信息。
+     * @param Throwable $e
+     * @return void
+     */
+    protected function isDebugResponse(Throwable $e): void
+    {
+        if (!empty(Env::get('app_debug'))) {
+            $this->responseData['error_message'] = $this->errorMessage;
+            $this->responseData['error_trace'] = explode("\n", $e->getTraceAsString());
+            $this->responseData['file'] = $e->getFile();
+            $this->responseData['line'] = $e->getLine();
         }
     }
 
@@ -177,6 +192,6 @@ class Handler extends ThinkHandel
         ];
 
         $header = array_merge(['Content-Type' => 'application/json;charset=utf-8'], $this->header);
-        return Response::create($responseBody, 'jsonp', $this->statusCode)->header($header);
+        return Response::create($responseBody, 'json', $this->statusCode)->header($header);
     }
 }
