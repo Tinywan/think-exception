@@ -17,6 +17,7 @@ use think\facade\Log;
 use think\Request;
 use think\Response;
 use Throwable;
+use tinywan\event\NotifyEvent;
 use tinywan\exception\BaseException;
 
 class Handler extends ThinkHandel
@@ -79,6 +80,7 @@ class Handler extends ThinkHandel
      */
     public function report(Throwable $exception): void
     {
+        $this->dontReport = config('plugin.tinywan.exception-handler.app.exception_handler.dont_report', []);
         parent::report($exception);
     }
 
@@ -92,9 +94,11 @@ class Handler extends ThinkHandel
      */
     public function render($request, Throwable $e): Response
     {
+        $this->config = array_merge($this->config, config('plugin.tinywan.exception-handler.app.exception_handler', []));
         $this->addRequestInfoToResponse($request);
         $this->handlerAllException($e);
         $this->isDebugResponse($e);
+        $this->triggerNotifyEvent($e);
         return $this->buildResponse();
     }
 
@@ -176,6 +180,22 @@ class Handler extends ThinkHandel
             $this->responseData['error_trace'] = explode("\n", $e->getTraceAsString());
             $this->responseData['file'] = $e->getFile();
             $this->responseData['line'] = $e->getLine();
+        }
+    }
+
+    /**
+     * @desc 触发通知事件
+     * @param Throwable $e
+     * @return void
+     */
+    protected function triggerNotifyEvent(Throwable $e): void
+    {
+        if ($this->config['event_trigger']['enable'] ?? false) {
+            $responseData = $this->responseData;
+            $responseData['message'] = $this->errorMessage;
+            $responseData['file'] = $e->getFile();
+            $responseData['line'] = $e->getLine();
+            NotifyEvent::dingTalkRobot($responseData);
         }
     }
 
