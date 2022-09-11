@@ -1,6 +1,5 @@
-# webman exception handler 异常插件
+# ThinkPHP6.0 exception handler 异常插件
 
-[![Latest Stable Version](http://poser.pugx.org/tinywan/think-exception-handler/v)](https://packagist.org/packages/tinywan/exception-handler)
 [![Total Downloads](http://poser.pugx.org/tinywan/think-exception-handler/downloads)](https://packagist.org/packages/tinywan/exception-handler)
 [![License](http://poser.pugx.org/tinywan/think-exception-handler/license)](https://packagist.org/packages/tinywan/exception-handler)
 [![PHP Version Require](http://poser.pugx.org/tinywan/think-exception-handler/require/php)](https://packagist.org/packages/tinywan/exception-handler)
@@ -13,14 +12,16 @@
 composer require tinywan/think-exception-handler
 ```
 
-## 发布配置
+## 配置
+
+### 发布配置
 
 ```phpregexp
 php think tinywan:exception
 ```
 这将自动生成 `config/exception.php` 配置文件。
 
-## 配置异常类
+### 配置异常类
 
 `app/provider.php`
 
@@ -36,7 +37,7 @@ return [
 ```php
 use tinywan\exception\BadRequestHttpException;
 
-class Token{
+class Token {
     public function issueToken(Request $request): Response
     {
         $params = $request->post();
