@@ -15,19 +15,21 @@ class NotifyEvent
     /**
      * 发送钉钉机器人
      * @param array $args
+     * @param array $config
      * @return bool|string
      */
-    public static function dingTalkRobot(array $args)
+    public static function dingTalkRobot(array $args, array $config)
     {
-        $config =  config('plugin.tinywan.exception-handler.app.exception_handler.event_trigger.ding_talk');
+        $config = $config['dingtalk'];
         $accessToken = $config['accessToken'];
         $secret = $config['secret'];
         $title = $config['title'];
         $message = ' --- ' . " \n";
         $message .= ' - 请求时间：' . $args['timestamp'] . " \n";
-        $message .= ' - 请求路由：' . $args['request_url'] . " \n";
-        $message .= ' - 请求IP：' . $args['client_ip'] . " \n";
-        $message .= ' - 请求参数：' . json_encode($args['request_param']) . " \n";
+        $message .= ' - 请求域名：' . $args['domain'] . " \n";
+        $message .= ' - 请求路由：' . $args['url'] . " \n";
+        $message .= ' - 请求IP：' . $args['ip'] . " \n";
+        $message .= ' - 请求参数：' . json_encode($args['param']) . " \n";
         $message .= ' - 异常消息：' . $args['message'] . " \n";
         $message .= ' - 异常文件：' . $args['file'] . " \n";
         $message .= ' - 异常文件行数：' . $args['line'] . " \n";
@@ -57,7 +59,7 @@ class NotifyEvent
         $errorData = $jsonArr[1];
         $env = '开发环境';
         if (!app()->runningInConsole()) {
-            $message = '<strong>请求站点：</strong>' . MYSQL_DRIVER. ' <br/>';
+            $message = '<strong>请求站点：</strong> 默认 <br/>';
             if ($errorData['sub_domain'] == 'api') {
                 $env = '正式环境';
             } elseif ($errorData['sub_domain'] == 'pre-api') {

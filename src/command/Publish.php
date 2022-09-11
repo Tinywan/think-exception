@@ -36,6 +36,7 @@ class Publish extends Command
         if (!file_exists(config_path().'exception.php')) {
             copy(__DIR__.'/../config/exception.php', config_path().'exception.php');
         }
+        $output->writeln('<info>Succeed!</info>');
         return 1;
     }
 }

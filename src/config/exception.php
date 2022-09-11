@@ -1,4 +1,10 @@
 <?php
+/**
+ * @desc 异常配置文件
+ * @author Tinywan(ShaoBo Wan)
+ * @email 756684177@qq.com
+ * @date 2022/9/11 15:56
+ */
 
 return [
     // 开关
@@ -15,6 +21,7 @@ return [
     ],
     // 自定义HTTP状态码
     'status' => [
+        'route' => 404, // 路由异常
         'validate' => 400, // 验证器异常
         'jwt_token' => 401, // JWT 认证失败
         'jwt_token_expired' => 402, // JWT 令牌过期

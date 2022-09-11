@@ -12,6 +12,7 @@ use think\exception\Handle as ThinkHandel;
 use think\exception\InvalidArgumentException;
 use think\exception\RouteNotFoundException;
 use think\exception\ValidateException;
+use think\facade\Config;
 use think\facade\Env;
 use think\facade\Log;
 use think\Request;
@@ -32,7 +33,7 @@ class Handler extends ThinkHandel
     /**
      * HTTP Response Status Code.
      *
-     * @var array
+     * @var int
      */
     public $statusCode = 200;
 
@@ -80,7 +81,7 @@ class Handler extends ThinkHandel
      */
     public function report(Throwable $exception): void
     {
-        $this->dontReport = config('plugin.tinywan.exception-handler.app.exception_handler.dont_report', []);
+        $this->dontReport = Config::get('exception', []);
         parent::report($exception);
     }
 
@@ -94,7 +95,7 @@ class Handler extends ThinkHandel
      */
     public function render($request, Throwable $e): Response
     {
-        $this->config = array_merge($this->config, config('plugin.tinywan.exception-handler.app.exception_handler', []));
+        $this->config = array_merge($this->config, Config::get('exception', []));
         $this->addRequestInfoToResponse($request);
         $this->handlerAllException($e);
         $this->isDebugResponse($e);
@@ -147,17 +148,18 @@ class Handler extends ThinkHandel
      */
     protected function handlerExtraException(Throwable $e): void
     {
+        $status = $this->config['status'];
         if ($e instanceof RouteNotFoundException) {
-            $this->statusCode = 404;
+            $this->statusCode = $status['route'] ?? 404;
             $this->errorMessage = '接口路由不存在';
         } elseif ($e instanceof ValidateException) {
-            $this->statusCode = 400;
+            $this->statusCode = $status['validate'] ?? 400;
             $this->errorMessage = $e->getMessage();
         } elseif ($e instanceof InvalidArgumentException) {
-            $this->statusCode = 415;
+            $this->statusCode = $status['invalid_argument'] ?? 415;
             $this->errorMessage = '预期参数配置异常：' . $e->getMessage();
         } else {
-            $this->statusCode = 500;
+            $this->statusCode = $status['server_error'] ?? 500;
             $this->errorMessage = '请求失败，请稍后再试';
             Log::error(array_merge($this->responseData, [
                 'error_message' => $e->getMessage(),
@@ -190,12 +192,12 @@ class Handler extends ThinkHandel
      */
     protected function triggerNotifyEvent(Throwable $e): void
     {
-        if ($this->config['event_trigger']['enable'] ?? false) {
+        if ($this->config['trigger_event']['enable'] ?? false) {
             $responseData = $this->responseData;
             $responseData['message'] = $this->errorMessage;
             $responseData['file'] = $e->getFile();
             $responseData['line'] = $e->getLine();
-            NotifyEvent::dingTalkRobot($responseData);
+            NotifyEvent::dingTalkRobot($responseData, $this->config);
         }
     }
 
