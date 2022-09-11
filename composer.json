@@ -19,10 +19,7 @@
   },
   "scripts": {
     "cs-fix": "./vendor/bin/php-cs-fixer fix",
-    "php-stan": "./vendor/bin/phpstan analyse src",
-    "post-autoload-dump": [
-      "@php think tinywan:exception"
-    ]
+    "php-stan": "./vendor/bin/phpstan analyse src"
   },
   "extra": {
     "think": {

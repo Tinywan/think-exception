@@ -151,16 +151,16 @@ class Handler extends ThinkHandel
         $status = $this->config['status'];
         if ($e instanceof RouteNotFoundException) {
             $this->statusCode = $status['route'] ?? 404;
-            $this->errorMessage = '接口路由不存在';
+            $this->errorMessage = 'route not exist';
         } elseif ($e instanceof ValidateException) {
             $this->statusCode = $status['validate'] ?? 400;
             $this->errorMessage = $e->getMessage();
         } elseif ($e instanceof InvalidArgumentException) {
             $this->statusCode = $status['invalid_argument'] ?? 415;
-            $this->errorMessage = '预期参数配置异常：' . $e->getMessage();
+            $this->errorMessage = 'expected parameter config exception：' . $e->getMessage();
         } else {
             $this->statusCode = $status['server_error'] ?? 500;
-            $this->errorMessage = '请求失败，请稍后再试';
+            $this->errorMessage = 'Server Unknown Error';
             Log::error(array_merge($this->responseData, [
                 'error_message' => $e->getMessage(),
                 'error_trace' => $e->getTraceAsString(),
@@ -210,7 +210,7 @@ class Handler extends ThinkHandel
         $responseBody = [
             'code' => $this->errorCode,
             'msg' => $this->errorMessage,
-            'data' => $this->responseData,
+            'data' => $this->responseData
         ];
 
         $header = array_merge(['Content-Type' => 'application/json;charset=utf-8'], $this->header);
