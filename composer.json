@@ -24,7 +24,7 @@
   "extra": {
     "think": {
       "services": [
-        "tinywan\\ExceptionService"
+        "tinywan\\service\\ExceptionService"
       ]
     }
   }
