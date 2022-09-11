@@ -20,17 +20,16 @@ class NotifyEvent
      */
     public static function dingTalkRobot(array $args, array $config)
     {
-        $config = $config['dingtalk'];
+        $config = $config['trigger_event']['dingtalk'];
         $accessToken = $config['accessToken'];
         $secret = $config['secret'];
         $title = $config['title'];
-        $message = ' --- ' . " \n";
-        $message .= ' - 请求时间：' . $args['timestamp'] . " \n";
-        $message .= ' - 请求域名：' . $args['domain'] . " \n";
+        $message = ' - 错误消息： ' .$args['message']. " \n";
         $message .= ' - 请求路由：' . $args['url'] . " \n";
         $message .= ' - 请求IP：' . $args['ip'] . " \n";
+        $message .= ' - 请求时间：' . $args['timestamp'] . " \n";
         $message .= ' - 请求参数：' . json_encode($args['param']) . " \n";
-        $message .= ' - 异常消息：' . $args['message'] . " \n";
+        $message .= ' - 请求域名：' . $args['domain'] . " \n";
         $message .= ' - 异常文件：' . $args['file'] . " \n";
         $message .= ' - 异常文件行数：' . $args['line'] . " \n";
         $data = [
