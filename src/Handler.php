@@ -81,7 +81,10 @@ class Handler extends ThinkHandel
      */
     public function report(Throwable $exception): void
     {
-        $this->dontReport = Config::get('exception', []);
+        $this->config = array_merge($this->config, Config::get('exception', []));
+        if (isset($this->config['ignore_report'])) {
+            $this->ignoreReport = array_merge($this->ignoreReport, $this->config['ignore_report']);
+        }
         parent::report($exception);
     }
 
@@ -95,7 +98,6 @@ class Handler extends ThinkHandel
      */
     public function render($request, Throwable $e): Response
     {
-        $this->config = array_merge($this->config, Config::get('exception', []));
         $this->addRequestInfoToResponse($request);
         $this->handlerAllException($e);
         $this->isDebugResponse($e);
@@ -210,7 +212,7 @@ class Handler extends ThinkHandel
         $responseBody = [
             'code' => $this->errorCode,
             'msg' => $this->errorMessage,
-            'data' => $this->responseData
+            'data' => $this->responseData,
         ];
 
         $header = array_merge(['Content-Type' => 'application/json;charset=utf-8'], $this->header);

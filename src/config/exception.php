@@ -10,7 +10,7 @@ return [
     // 开关
     'enable' => true,
     // 不需要记录错误日志
-    'dont_report' => [
+    'ignore_report' => [
         \tinywan\exception\BadRequestHttpException::class,
         \tinywan\exception\UnauthorizedHttpException::class,
         \tinywan\exception\ForbiddenHttpException::class,
