@@ -1,0 +1,24 @@
+{
+  "name": "tinywan/think-exception-handler",
+  "description": "ThinkPHP 6.0 exception handler plugin",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": ">=7.2",
+    "topthink/framework": "^6.0.0",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "tinywan\\": "src"
+    }
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^1.4",
+    "friendsofphp/php-cs-fixer": "^3.6"
+  },
+  "scripts": {
+    "cs-fix": "./vendor/bin/php-cs-fixer fix",
+    "php-stan": "./vendor/bin/phpstan analyse app"
+  }
+}
