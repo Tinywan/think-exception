@@ -28,9 +28,8 @@ class Publish extends Command
      * 执行指令
      * @param Input  $input
      * @param Output $output
-     * @see setCode()
      */
-    protected function execute(Input $input, Output $output): ?int
+    protected function execute(Input $input, Output $output)
     {
         if (!file_exists(config_path().'exception.php')) {
             copy(__DIR__.'/../config/exception.php', config_path().'exception.php');
