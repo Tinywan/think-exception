@@ -28,5 +28,5 @@ class BadRequestHttpException extends BaseException
     /**
      * @var string
      */
-    public $errorMessage = '请求参数错误，服务器不能或不会处理该请求';
+    public $errorMessage = '客户端请求参数错误';
 }
