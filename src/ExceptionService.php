@@ -12,7 +12,7 @@ namespace tinywan\service;
 
 use think\Service;
 
-class ConfigService extends Service
+class ExceptionService extends Service
 {
     /**
      * @desc 启动方法，在所有的系统服务注册完成之后调用，用于定义启动某个系统服务之前需要做的操作

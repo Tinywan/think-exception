@@ -20,5 +20,12 @@
   "scripts": {
     "cs-fix": "./vendor/bin/php-cs-fixer fix",
     "php-stan": "./vendor/bin/phpstan analyse src"
+  },
+  "extra": {
+    "think": {
+      "services": [
+        "tinywan\\ExceptionService"
+      ]
+    }
   }
 }
