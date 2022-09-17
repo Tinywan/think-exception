@@ -1,4 +1,4 @@
-# ThinkPHP6.0 exception handler 异常插件
+# ThinkPHP6.0 exception 异常插件
 
 [![Total Downloads](http://poser.pugx.org/tinywan/think-exception-handler/downloads)](https://packagist.org/packages/tinywan/exception-handler)
 [![License](http://poser.pugx.org/tinywan/think-exception-handler/license)](https://packagist.org/packages/tinywan/exception-handler)
@@ -8,8 +8,8 @@
 
 ## 安装
 
-```php
-composer require tinywan/think-exception-handler
+```phpregexp
+composer require tinywan/think-exception
 ```
 
 ## 配置
