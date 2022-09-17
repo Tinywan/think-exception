@@ -1,6 +1,6 @@
 {
   "name": "tinywan/think-exception",
-  "description": "ThinkPHP 6.0 exception handler plugin",
+  "description": "ThinkPHP 6.0 exception plugin",
   "type": "library",
   "license": "MIT",
   "require": {
