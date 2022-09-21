@@ -1,10 +1,10 @@
 # ThinkPHP6.0 exception 异常插件
 
-[![Total Downloads](http://poser.pugx.org/tinywan/think-exception-handler/downloads)](https://packagist.org/packages/tinywan/exception-handler)
-[![License](http://poser.pugx.org/tinywan/think-exception-handler/license)](https://packagist.org/packages/tinywan/exception-handler)
-[![PHP Version Require](http://poser.pugx.org/tinywan/think-exception-handler/require/php)](https://packagist.org/packages/tinywan/exception-handler)
-[![exception-handler](https://img.shields.io/github/last-commit/tinywan/think-exception-handler/main)]()
-[![exception-handler](https://img.shields.io/github/v/tag/tinywan/think-exception-handler?color=ff69b4)]()
+[![Total Downloads](http://poser.pugx.org/tinywan/think-exception/downloads)](https://packagist.org/packages/tinywan/think-exception)
+[![License](http://poser.pugx.org/tinywan/think-exception/license)](https://packagist.org/packages/tinywan/think-exception)
+[![PHP Version Require](http://poser.pugx.org/tinywan/think-exception/require/php)](https://packagist.org/packages/tinywan/think-exception)
+[![exception-handler](https://img.shields.io/github/last-commit/tinywan/think-exception/main)]()
+[![exception-handler](https://img.shields.io/github/v/tag/tinywan/think-exception?color=ff69b4)]()
 
 ## 安装
 
