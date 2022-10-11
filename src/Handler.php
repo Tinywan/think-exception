@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace tinywan;
 
+use think\db\exception\DbException;
 use think\exception\Handle as ThinkHandel;
 use think\exception\InvalidArgumentException;
 use think\exception\RouteNotFoundException;
@@ -119,6 +120,7 @@ class Handler extends ThinkHandel
             'method' => $request->method(),
             'param' => $request->param(),
             'ip' => $request->ip(),
+            'is_mobile' => $request->isMobile(),
             'timestamp' => date('Y-m-d H:i:s'),
         ]);
     }
@@ -153,14 +155,17 @@ class Handler extends ThinkHandel
         $status = $this->config['status'];
         if ($e instanceof RouteNotFoundException) {
             $this->statusCode = $status['route'] ?? 404;
-            $this->errorMessage = 'route not exist';
+            $this->errorMessage = 'This Route Does Not Exist';
         } elseif ($e instanceof ValidateException) {
             $this->statusCode = $status['validate'] ?? 400;
             $this->errorMessage = $e->getMessage();
         } elseif ($e instanceof InvalidArgumentException) {
             $this->statusCode = $status['invalid_argument'] ?? 415;
-            $this->errorMessage = 'expected parameter config exception：' . $e->getMessage();
-        } else {
+            $this->errorMessage = 'config exception：' . $e->getMessage();
+        } elseif ($e instanceof DbException) {
+            $this->statusCode = 500;
+            $this->errorMessage = 'database exception：'.$e->getMessage();
+        }  else {
             $this->statusCode = $status['server_error'] ?? 500;
             $this->errorMessage = 'Server Unknown Error';
             Log::error(array_merge($this->responseData, [
