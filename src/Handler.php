@@ -23,6 +23,7 @@ use tinywan\event\NotifyEvent;
 use tinywan\exception\BaseException;
 use tinywan\exception\JWTRefreshTokenExpiredException;
 use tinywan\exception\JWTTokenException;
+use tinywan\exception\JWTTokenExpiredException;
 
 class Handler extends ThinkHandel
 {
@@ -164,7 +165,7 @@ class Handler extends ThinkHandel
         } elseif ($e instanceof JWTRefreshTokenExpiredException) {
             $this->statusCode = 402;
             $this->errorMessage = $e->getMessage();
-        } elseif ($e instanceof JWTTokenException) {
+        } elseif ($e instanceof JWTTokenException || $e instanceof JWTTokenExpiredException) {
             $this->statusCode = 403;
             $this->errorMessage = $e->getMessage();
         } elseif ($e instanceof InvalidArgumentException) {
