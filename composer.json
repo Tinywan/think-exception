@@ -15,7 +15,8 @@
   "require-dev": {
     "phpstan/phpstan": "^1.4",
     "friendsofphp/php-cs-fixer": "^3.6",
-    "topthink/framework": "^6.0"
+    "topthink/framework": "^6.0",
+    "tinywan/think-jwt": "^1.0"
   },
   "scripts": {
     "cs-fix": "./vendor/bin/php-cs-fixer fix",

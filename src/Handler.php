@@ -21,6 +21,8 @@ use think\Response;
 use Throwable;
 use tinywan\event\NotifyEvent;
 use tinywan\exception\BaseException;
+use tinywan\exception\JWTRefreshTokenExpiredException;
+use tinywan\exception\JWTTokenException;
 
 class Handler extends ThinkHandel
 {
@@ -159,13 +161,19 @@ class Handler extends ThinkHandel
         } elseif ($e instanceof ValidateException) {
             $this->statusCode = $status['validate'] ?? 400;
             $this->errorMessage = $e->getMessage();
+        } elseif ($e instanceof JWTRefreshTokenExpiredException) {
+            $this->statusCode = 402;
+            $this->errorMessage = $e->getMessage();
+        } elseif ($e instanceof JWTTokenException) {
+            $this->statusCode = 403;
+            $this->errorMessage = $e->getMessage();
         } elseif ($e instanceof InvalidArgumentException) {
             $this->statusCode = $status['invalid_argument'] ?? 415;
             $this->errorMessage = 'config exception：' . $e->getMessage();
         } elseif ($e instanceof DbException) {
             $this->statusCode = 500;
             $this->errorMessage = 'database exception：'.$e->getMessage();
-        }  else {
+        } else {
             $this->statusCode = $status['server_error'] ?? 500;
             $this->errorMessage = 'Server Unknown Error';
             Log::error(array_merge($this->responseData, [
