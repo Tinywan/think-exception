@@ -163,10 +163,10 @@ class Handler extends ThinkHandel
             $this->statusCode = $status['validate'] ?? 400;
             $this->errorMessage = $e->getMessage();
         } elseif ($e instanceof JWTTokenException || $e instanceof JWTTokenExpiredException) {
-            $this->statusCode = 401;
+            $this->statusCode = $status['jwt_token'] ?? 401;
             $this->errorMessage = $e->getMessage();
         } elseif ($e instanceof JWTRefreshTokenExpiredException) {
-            $this->statusCode = 402;
+            $this->statusCode = $status['jwt_token_expired'] ?? 402;
             $this->errorMessage = $e->getMessage();
         } elseif ($e instanceof InvalidArgumentException) {
             $this->statusCode = $status['invalid_argument'] ?? 415;
