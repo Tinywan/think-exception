@@ -1,6 +1,7 @@
 # ThinkPHP6.0 exception 异常插件
 
 [![Total Downloads](http://poser.pugx.org/tinywan/think-exception/downloads)](https://packagist.org/packages/tinywan/think-exception)
+[![Total Downloads](http://poser.pugx.org/tinywan/think-exception/downloads)](https://packagist.org/packages/tinywan/think-exception)
 [![License](http://poser.pugx.org/tinywan/think-exception/license)](https://packagist.org/packages/tinywan/think-exception)
 [![PHP Version Require](http://poser.pugx.org/tinywan/think-exception/require/php)](https://packagist.org/packages/tinywan/think-exception)
 [![exception-handler](https://img.shields.io/github/last-commit/tinywan/think-exception/main)]()
