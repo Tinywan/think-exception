@@ -21,9 +21,6 @@ use think\Response;
 use Throwable;
 use tinywan\event\NotifyEvent;
 use tinywan\exception\BaseException;
-use tinywan\exception\JWTRefreshTokenExpiredException;
-use tinywan\exception\JWTTokenException;
-use tinywan\exception\JWTTokenExpiredException;
 
 class Handler extends ThinkHandel
 {
@@ -156,18 +153,15 @@ class Handler extends ThinkHandel
     protected function handlerExtraException(Throwable $e): void
     {
         $status = $this->config['status'];
+        $this->errorMessage = $e->getMessage();
         if ($e instanceof RouteNotFoundException) {
             $this->statusCode = $status['route'] ?? 404;
-            $this->errorMessage = 'This Route Does Not Exist';
         } elseif ($e instanceof ValidateException) {
             $this->statusCode = $status['validate'] ?? 400;
-            $this->errorMessage = $e->getMessage();
         } elseif ($e instanceof JWTTokenException || $e instanceof JWTTokenExpiredException) {
             $this->statusCode = $status['jwt_token'] ?? 401;
-            $this->errorMessage = $e->getMessage();
         } elseif ($e instanceof JWTRefreshTokenExpiredException) {
             $this->statusCode = $status['jwt_token_expired'] ?? 402;
-            $this->errorMessage = $e->getMessage();
         } elseif ($e instanceof InvalidArgumentException) {
             $this->statusCode = $status['invalid_argument'] ?? 415;
             $this->errorMessage = 'config exception：' . $e->getMessage();
@@ -202,13 +196,13 @@ class Handler extends ThinkHandel
     }
 
     /**
-     * @desc 触发通知事件
+     * @desc: 触发通知事件
      * @param Throwable $e
-     * @return void
+     * @author Tinywan(ShaoBo Wan)
      */
     protected function triggerNotifyEvent(Throwable $e): void
     {
-        if ($this->config['trigger_event']['enable'] ?? false) {
+        if (!$this->isIgnoreReport($e) && $this->config['trigger_event']['enable'] ?? false) {
             $responseData = $this->responseData;
             $responseData['message'] = $this->errorMessage;
             $responseData['file'] = $e->getFile();
