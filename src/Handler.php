@@ -21,6 +21,9 @@ use think\Response;
 use Throwable;
 use tinywan\event\NotifyEvent;
 use tinywan\exception\BaseException;
+use tinywan\exception\JWTRefreshTokenExpiredException;
+use tinywan\exception\JWTTokenException;
+use tinywan\exception\JWTTokenExpiredException;
 
 class Handler extends ThinkHandel
 {
