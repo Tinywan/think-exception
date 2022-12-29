@@ -151,11 +151,10 @@ Content-Type: application/json;charset=UTF-8
 
 ```php
 
-namespace support;
+namespace app\common;
 
-use Illuminate\Validation\ValidationException;
-use Tinywan\ExceptionHandler\Handler;
-use Webman\Http\Response;
+use Throwable;
+use tinywan\Handler;
 
 class ErrorHandler extends Handler
 {
