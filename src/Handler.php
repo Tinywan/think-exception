@@ -103,7 +103,7 @@ class Handler extends ThinkHandel
     public function render($request, Throwable $e): Response
     {
         $this->addRequestInfoToResponse($request);
-        $this->handlerAllException($e);
+        $this->solveAllException($e);
         $this->isDebugResponse($e);
         $this->triggerNotifyEvent($e);
         return $this->buildResponse();
@@ -133,7 +133,7 @@ class Handler extends ThinkHandel
      * @param Throwable $e
      * @author Tinywan(ShaoBo Wan)
      */
-    protected function handlerAllException(Throwable $e)
+    protected function solveAllException(Throwable $e)
     {
         if ($e instanceof BaseException) {
             $this->statusCode = $e->statusCode;
@@ -145,7 +145,7 @@ class Handler extends ThinkHandel
             }
             return;
         }
-        $this->handlerExtraException($e);
+        $this->solveExtraException($e);
     }
 
     /**
@@ -153,7 +153,7 @@ class Handler extends ThinkHandel
      * @param Throwable $e
      * @author Tinywan(ShaoBo Wan)
      */
-    protected function handlerExtraException(Throwable $e): void
+    protected function solveExtraException(Throwable $e): void
     {
         $status = $this->config['status'];
         $this->errorMessage = $e->getMessage();
