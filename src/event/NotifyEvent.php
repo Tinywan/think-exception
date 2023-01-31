@@ -24,7 +24,8 @@ class NotifyEvent
         $accessToken = $config['accessToken'];
         $secret = $config['secret'];
         $title = $config['title'];
-        $message = ' - 错误消息： ' .$args['message']. " \n";
+        $message = ' - 响应错误： ' .$args['message']. " \n";
+        $message .= ' - 详细错误：' . $args['error'] . " \n";
         $message .= ' - 请求路由：' . $args['url'] . " \n";
         $message .= ' - 请求IP：' . $args['ip'] . " \n";
         $message .= ' - 请求时间：' . $args['timestamp'] . " \n";

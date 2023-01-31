@@ -208,6 +208,7 @@ class Handler extends ThinkHandel
         if (!$this->isIgnoreReport($e) && $this->config['trigger_event']['enable'] ?? false) {
             $responseData = $this->responseData;
             $responseData['message'] = $this->errorMessage;
+            $responseData['error'] = $e->getMessage();
             $responseData['file'] = $e->getFile();
             $responseData['line'] = $e->getLine();
             NotifyEvent::dingTalkRobot($responseData, $this->config);
