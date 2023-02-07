@@ -8,7 +8,9 @@ declare(strict_types=1);
 
 namespace tinywan;
 
+use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\exception\Handle as ThinkHandel;
 use think\exception\InvalidArgumentException;
 use think\exception\RouteNotFoundException;
@@ -169,9 +171,9 @@ class Handler extends ThinkHandel
         } elseif ($e instanceof InvalidArgumentException) {
             $this->statusCode = $status['invalid_argument'] ?? 415;
             $this->errorMessage = 'config exception：' . $e->getMessage();
-        } elseif ($e instanceof DbException) {
+        } elseif ($e instanceof DbException || $e instanceof DataNotFoundException || $e instanceof ModelNotFoundException) {
             $this->statusCode = 500;
-            $this->errorMessage = 'database exception：'.$e->getMessage();
+            $this->errorMessage = 'db exception：'.$e->getMessage();
         } else {
             $this->statusCode = $status['server_error'] ?? 500;
             $this->errorMessage = 'Server Unknown Error';
