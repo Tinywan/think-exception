@@ -106,6 +106,7 @@ class Handler extends ThinkHandel
         $this->solveAllException($e);
         $this->isDebugResponse($e);
         $this->triggerNotifyEvent($e);
+        $this->triggerTraceEvent($e);
         return $this->buildResponse();
     }
 
@@ -216,15 +217,40 @@ class Handler extends ThinkHandel
     }
 
     /**
+     * @desc: 触发Trace事件
+     * @param Throwable $e
+     * @author Tinywan(ShaoBo Wan)
+     */
+    protected function triggerTraceEvent(Throwable $e): void
+    {
+        if (isset(request()->tracer) && isset(request()->rootSpan)) {
+            $samplingFlags = request()->rootSpan->getContext();
+            $this->header['Trace-Id'] = $samplingFlags->getTraceId();
+            $exceptionSpan = request()->tracer->newChild($samplingFlags);
+            $exceptionSpan->setName('exception');
+            $exceptionSpan->start();
+            $exceptionSpan->tag('error.code', (string) $this->errorCode);
+            $value = [
+                'event' => 'error',
+                'message' => $this->errorMessage,
+                'stack' => 'Exception:' . $e->getFile() . '|' . $e->getLine(),
+            ];
+            $exceptionSpan->annotate(json_encode($value));
+            $exceptionSpan->finish();
+        }
+    }
+
+    /**
      * @desc 构造 Response.
      * @return Response
      */
     protected function buildResponse(): Response
     {
+        $bodyKey = array_keys($this->config['body']);
         $responseBody = [
-            'code' => $this->errorCode,
-            'msg' => $this->errorMessage,
-            'data' => $this->responseData,
+            $bodyKey[0] ?? 'code' => $this->errorCode,
+            $bodyKey[1] ?? 'msg' => $this->errorMessage,
+            $bodyKey[2] ?? 'data' => $this->responseData,
         ];
 
         $header = array_merge(['Content-Type' => 'application/json;charset=utf-8'], $this->header);
