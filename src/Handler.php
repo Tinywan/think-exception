@@ -194,7 +194,7 @@ class Handler extends ThinkHandel
     protected function isDebugResponse(Throwable $e): void
     {
         if (!empty(Env::get('app_debug'))) {
-            $this->responseData['error_message'] = $this->errorMessage;
+            $this->responseData['error_message'] = $e->getMessage();
             $this->responseData['error_trace'] = explode("\n", $e->getTraceAsString());
             $this->responseData['file'] = $e->getFile();
             $this->responseData['line'] = $e->getLine();
