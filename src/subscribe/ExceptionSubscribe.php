@@ -34,7 +34,7 @@ class ExceptionSubscribe
                     'timestamp' => date('Y-m-d H:i:s'),
                     'param' => request()->param(),
                     'file' => '手动记录错误日志触发',
-                    'line' => '手动记录错误日志触发',
+                    'line' => 0,
                 ];
                 NotifyEvent::dingTalkRobot($newArgs, $config);
             }
