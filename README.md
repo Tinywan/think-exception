@@ -24,11 +24,22 @@ php think tinywan:exception
 
 ### 配置异常类
 
-`app/provider.php`
+日志服务 `app/provider.php`
 
 ```php
 return [
     'think\exception\Handle' => tinywan\Handler::class,
+];
+```
+
+日志订阅 `app/event.php`
+
+```php
+return [
+    // 添加一个订阅类
+    'subscribe' => [
+        \tinywan\subscribe\ExceptionSubscribe::class,
+    ],
 ];
 ```
 
