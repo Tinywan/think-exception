@@ -33,8 +33,8 @@ class ExceptionSubscribe
                     'domain' => request()->domain(),
                     'timestamp' => date('Y-m-d H:i:s'),
                     'param' => request()->param(),
-                    'file' => '',
-                    'line' => '',
+                    'file' => '手动记录错误日志触发',
+                    'line' => '手动记录错误日志触发',
                 ];
                 NotifyEvent::dingTalkRobot($newArgs, $config);
             }
