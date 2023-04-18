@@ -49,5 +49,6 @@ return [
             'secret' => 'xxxxxxxxxxxxxxxx',
             'title' => '邮件异常通知',
         ],
+        'is_trace' => false,
     ],
 ];

@@ -108,7 +108,6 @@ class Handler extends ThinkHandel
         $this->solveAllException($e);
         $this->isDebugResponse($e);
         $this->triggerNotifyEvent($e);
-        $this->triggerTraceEvent($e);
         return $this->buildResponse();
     }
 
@@ -215,6 +214,9 @@ class Handler extends ThinkHandel
             $responseData['file'] = $e->getFile();
             $responseData['line'] = $e->getLine();
             NotifyEvent::dingTalkRobot($responseData, $this->config);
+            if ($this->config['trigger_event']['is_trace']) {
+                self::triggerTraceEvent($e);
+            }
         }
     }
 
