@@ -26,6 +26,7 @@ use tinywan\exception\BaseException;
 use tinywan\exception\JWTRefreshTokenExpiredException;
 use tinywan\exception\JWTTokenException;
 use tinywan\exception\JWTTokenExpiredException;
+use tinywan\exception\ServerErrorHttpException;
 
 class Handler extends ThinkHandel
 {
@@ -145,7 +146,9 @@ class Handler extends ThinkHandel
             if (isset($e->data)) {
                 $this->responseData = array_merge($this->responseData, $e->data);
             }
-            return;
+            if (!$e instanceof ServerErrorHttpException) {
+                return;
+            }
         }
         $this->solveExtraException($e);
     }
@@ -173,14 +176,22 @@ class Handler extends ThinkHandel
         } elseif ($e instanceof DbException || $e instanceof DataNotFoundException || $e instanceof ModelNotFoundException) {
             $this->statusCode = 500;
             $this->errorMessage = 'db exception：'.$e->getMessage();
+        } elseif ($e instanceof ServerErrorHttpException) {
+            $this->errorMessage = $e->errorMessage;
+            $this->statusCode = 500;
+            Log::error(array_merge($this->responseData, [
+                'error_message' => $this->errorMessage,
+                'error_file' => $e->getFile(),
+                'error_file_line' => $e->getLine(),
+            ]));
         } else {
             $this->statusCode = $status['server_error'] ?? 500;
             $this->errorMessage = 'Server Unknown Error';
             Log::error(array_merge($this->responseData, [
                 'error_message' => $e->getMessage(),
                 'error_trace' => $e->getTraceAsString(),
-                'error_file'    => $e->getFile(),
-                'error_file_line'    => $e->getLine(),
+                'error_file' => $e->getFile(),
+                'error_file_line' => $e->getLine(),
             ]));
         }
     }
