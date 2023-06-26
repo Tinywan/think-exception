@@ -17,9 +17,10 @@ class NotifyEvent
      * @param array $args
      * @param array $config
      * @param string $name
+     * @param string $text
      * @return bool|string
      */
-    public static function dingTalkRobot(array $args, array $config, string $name = '')
+    public static function dingTalkRobot(array $args, array $config, string $name = '', string $text = '')
     {
         $config = $config['trigger_event']['dingtalk'];
         $accessToken = $config['accessToken'];
@@ -29,6 +30,10 @@ class NotifyEvent
         if (!empty($name)) {
             $title = $name;
             $message = ' - <font color="#dd0000">监控来源： ' .$title. "</font> \n";
+        }
+
+        if (!empty($text)) {
+            $message .= $text;
         }
         $message .= ' - 响应错误： ' .$args['message']. " \n";
         $message .= ' - 详细错误：' . $args['error'] . " \n";

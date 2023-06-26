@@ -191,6 +191,15 @@ class ErrorHandler extends Handler
 
 ![dingtalk.png](dingtalk.png)
 
+自定义异常消息
+
+```php
+
+$message = " - 自定义错误1： 前端域名xxx', \n";
+$message .= " - 自定义错误2： 浏览器版本xxx', \n";
+\tinywan\event\NotifyEvent::dingTalkRobot([], [], '正式', $message);
+```
+
 ## Other
 
 ### phpstan
