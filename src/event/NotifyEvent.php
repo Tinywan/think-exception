@@ -40,7 +40,7 @@ class NotifyEvent
         $message .= ' - 请求路由：' . $args['url'] . " \n";
         $message .= ' - 请求IP：' . $args['ip'] . " \n";
         $message .= ' - 请求时间：' . $args['timestamp'] . " \n";
-        $message .= ' - 请求参数：' . json_encode($args['param']) . " \n";
+        $message .= ' - 请求参数：' . json_encode($args['param'], JSON_UNESCAPED_UNICODE) . " \n";
         $message .= ' - 请求域名：' . $args['domain'] . " \n";
         $message .= ' - 异常文件：' . $args['file'] . " \n";
         $message .= ' - 异常文件行数：' . $args['line'] . " \n";
