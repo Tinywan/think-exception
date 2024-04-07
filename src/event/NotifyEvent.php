@@ -85,7 +85,7 @@ class NotifyEvent
         $message .= '<strong>请求时间：</strong>' . $errorData['timestamp']. ' <br/>';
         $message .= '<strong>请求路由：</strong>' . $errorData['request'] . ' <br/>';
         $message .= '<strong>请求端IP：</strong>' . $errorData['client']  . ' <br/>';
-        $message .= '<strong>请求参数：</strong>' . json_encode($errorData['param']) . ' <br/>';
+        $message .= '<strong>请求参数：</strong>' . json_encode($errorData['param'], JSON_UNESCAPED_UNICODE) . ' <br/>';
         $message .= '<strong>异常消息：</strong>' . $errorData['error_message'] . ' <br/>';
         $message .= '<strong>异常文件：</strong>' . $errorData['error_file'] . ' <br/>';
         $message .= '<strong>异常文件行数：</strong>' . $errorData['error_file_line'] . ' <br/>';
