@@ -51,4 +51,6 @@ return [
         ],
         'is_trace' => false,
     ],
+    // 错误日志是否需要记录trace
+    'log_error_trace' => true,
 ];

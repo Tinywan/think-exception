@@ -12,7 +12,6 @@ use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
 use think\exception\Handle as ThinkHandel;
-use think\exception\InvalidArgumentException;
 use think\exception\RouteNotFoundException;
 use think\exception\ValidateException;
 use think\facade\Config;
@@ -170,9 +169,9 @@ class Handler extends ThinkHandel
             $this->statusCode = $status['jwt_token'] ?? 401;
         } elseif ($e instanceof JWTRefreshTokenExpiredException) {
             $this->statusCode = $status['jwt_token_expired'] ?? 402;
-        } elseif ($e instanceof InvalidArgumentException) {
+        } elseif ($e instanceof \InvalidArgumentException) {
             $this->statusCode = $status['invalid_argument'] ?? 415;
-            $this->errorMessage = 'config exception：' . $e->getMessage();
+            $this->errorMessage = '预期参数异常：' . $e->getMessage();
         } elseif ($e instanceof DbException || $e instanceof DataNotFoundException || $e instanceof ModelNotFoundException) {
             $this->statusCode = 500;
             $this->errorMessage = 'db exception：'.$e->getMessage();
@@ -187,12 +186,16 @@ class Handler extends ThinkHandel
         } else {
             $this->statusCode = $status['server_error'] ?? 500;
             $this->errorMessage = 'Server Unknown Error';
-            Log::error(array_merge($this->responseData, [
+            $data = [
                 'error_message' => $e->getMessage(),
-                'error_trace' => $e->getTraceAsString(),
+                'error_trace' => '',
                 'error_file' => $e->getFile(),
                 'error_file_line' => $e->getLine(),
-            ]));
+            ];
+            if (isset($this->config['log_error_trace']) && true === $this->config['log_error_trace']) {
+                $data['error_trace'] = $e->getTraceAsString();
+            }
+            Log::error(array_merge($this->responseData, $data));
         }
     }
 
