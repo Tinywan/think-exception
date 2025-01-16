@@ -171,10 +171,10 @@ class Handler extends ThinkHandel
             $this->statusCode = $status['jwt_token_expired'] ?? 402;
         } elseif ($e instanceof \InvalidArgumentException) {
             $this->statusCode = $status['invalid_argument'] ?? 415;
-            $this->errorMessage = '预期参数异常：' . $e->getMessage();
-        } elseif ($e instanceof DbException || $e instanceof DataNotFoundException || $e instanceof ModelNotFoundException) {
+            $this->errorMessage = '无效参数' . $e->getMessage();
+        } elseif ($e instanceof DbException) {
             $this->statusCode = 500;
-            $this->errorMessage = 'db exception：'.$e->getMessage();
+            $this->errorMessage = $this->errorMessage.'[SQL]'.$e->getData()['Database Status']['Error SQL'] ?? '';
         } elseif ($e instanceof ServerErrorHttpException) {
             $this->errorMessage = $e->errorMessage;
             $this->statusCode = 500;
