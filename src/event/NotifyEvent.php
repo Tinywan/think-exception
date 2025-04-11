@@ -26,10 +26,12 @@ class NotifyEvent
         $accessToken = $config['accessToken'];
         $secret = $config['secret'];
         $title = $config['title'];
-        $message = ' - <font color="#dd00dd">监控来源： ' .$title. "</font> \n";
+        $message = '![异常报警通知](./monitor.png)' . " \n";
+        $message .= ' - <font color="#dd00dd">监控来源： ' .$title. "</font> \n";
         if (!empty($name)) {
             $title = $name;
-            $message = ' - <font color="#dd0000">监控来源： ' .$title. "</font> \n";
+            $message = '![异常报警通知](./monitor.png)' . " \n";
+            $message .= ' - <font color="#dd0000">监控来源： ' .$title. "</font> \n";
         }
 
         if (!empty($text)) {
