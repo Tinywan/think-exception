@@ -26,7 +26,7 @@ class NotifyEvent
         $accessToken = $config['accessToken'];
         $secret = $config['secret'];
         $title = $config['title'];
-        $message = '![异常报警通知](./monitor.png)' . " \n";
+        $message = '![异常报警通知](https://static.dingtalk.com/media/lALPD2P18Rd9RIxozQII_520_104.png)' . " \n";
         $message .= ' - <font color="#dd00dd">监控来源： ' .$title. "</font> \n";
         if (!empty($name)) {
             $title = $name;
