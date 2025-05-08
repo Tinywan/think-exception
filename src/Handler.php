@@ -8,9 +8,7 @@ declare(strict_types=1);
 
 namespace tinywan;
 
-use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
 use think\exception\Handle as ThinkHandel;
 use think\exception\RouteNotFoundException;
 use think\exception\ValidateException;
@@ -119,11 +117,17 @@ class Handler extends ThinkHandel
      */
     protected function addRequestInfoToResponse(Request $request): void
     {
+        $getData = json_encode($request->get(), JSON_UNESCAPED_UNICODE);
+        if ($getData !== false) {
+            $param = $request->param();
+        } else {
+            $param = $request->post();
+        }
         $this->responseData = array_merge($this->responseData, [
             'domain' => $request->domain(),
             'url' => $request->url(),
             'method' => $request->method(),
-            'param' => $request->post(),
+            'param' => $param,
             'ip' => $request->ip(),
             'is_mobile' => $request->isMobile(),
             'timestamp' => date('Y-m-d H:i:s'),
