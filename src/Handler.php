@@ -123,7 +123,7 @@ class Handler extends ThinkHandel
             'domain' => $request->domain(),
             'url' => $request->url(),
             'method' => $request->method(),
-            'param' => $request->param(),
+            'param' => $request->post(),
             'ip' => $request->ip(),
             'is_mobile' => $request->isMobile(),
             'timestamp' => date('Y-m-d H:i:s'),
